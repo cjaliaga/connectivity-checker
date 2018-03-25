@@ -24,20 +24,20 @@ namespace ConnectivityChecker.Controllers
         // GET: api/Connections
         [HttpGet]
         [Produces(typeof(IEnumerable<ConnectionInfo>))]
-        public IActionResult Get()
+        public IEnumerable<ConnectionInfo> Get()
         {
             var settings = _configuration.AsEnumerable();
             var connections = _connectionsService.FindConnectionsStringForAzureWebApps(settings);
-            return Ok(connections);
+            return connections;
         }
 
         [HttpGet("checkall")]
         [Produces(typeof(IEnumerable<ConnectionStatus>))]
-        public async Task<IActionResult> CheckAll()
+        public async Task<IEnumerable<ConnectionStatus>> CheckAll()
         {
             var settings = _configuration.AsEnumerable();
             var connections = _connectionsService.FindConnectionsStringForAzureWebApps(settings);
-            return Ok(await _connectionsService.CheckConnectionStatus(connections));
+            return await _connectionsService.CheckConnectionStatus(connections);
         }
 
         [HttpGet("check/{name}/{provider}")]

@@ -13,6 +13,11 @@ namespace ConnectivityChecker.Core.Providers
 
         public bool IsValid(KeyValuePair<string, string> variable)
         {
+            if (string.IsNullOrEmpty(variable.Value))
+            {
+                return false;
+            }
+
             var value = variable.Value.ToLower();
             return value.Contains("port=3306") || value.Contains("mysql.database.azure.com") ||
                    value.Contains(":3306") || value.Contains("uid=");
