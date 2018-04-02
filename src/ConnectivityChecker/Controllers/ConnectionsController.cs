@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using ConnectivityChecker.Contracts;
 using ConnectivityChecker.Contracts.Providers;
-using ConnectivityChecker.Core;
 using ConnectivityChecker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -14,9 +13,9 @@ namespace ConnectivityChecker.Controllers
     public class ConnectionsController : Controller
     {
         private readonly IConfiguration _configuration;
-        private readonly ConnectionsService _connectionsService;
+        private readonly IConnectionsService _connectionsService;
 
-        public ConnectionsController(IConfiguration configuration, ConnectionsService connectionsService)
+        public ConnectionsController(IConfiguration configuration, IConnectionsService connectionsService)
         {
             _configuration = configuration;
             _connectionsService = connectionsService;
@@ -44,6 +43,11 @@ namespace ConnectivityChecker.Controllers
         [Produces(typeof(ConnectionStatus))]
         public async Task<IActionResult> Check(string name, ProviderNames provider)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var setting = _configuration[name];
             if (string.IsNullOrEmpty(setting))
             {
@@ -67,8 +71,13 @@ namespace ConnectivityChecker.Controllers
 
         [HttpPost("check/{provider}")]
         [Produces(typeof(ConnectionStatus))]
-        public async Task<IActionResult> CheckConnection(ProviderNames provider, [FromBody] ConnectionString connection)
+        public async Task<IActionResult> CheckConnection([FromBody] ConnectionString connection, ProviderNames provider)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var info = new ConnectionInfo
             {
                 Value = connection.Value,

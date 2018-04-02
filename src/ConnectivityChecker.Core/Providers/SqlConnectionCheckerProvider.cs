@@ -76,7 +76,7 @@ namespace ConnectivityChecker.Core.Providers
 
         public bool IsValid(ConnectionInfo connection)
         {
-            return connection.Provider == ProviderNames.SqlServer;
+            return connection != null && connection.Provider == ProviderNames.SqlServer;
         }
     }
 }

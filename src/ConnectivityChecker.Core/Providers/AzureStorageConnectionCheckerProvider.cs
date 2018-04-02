@@ -21,7 +21,7 @@ namespace ConnectivityChecker.Core.Providers
 
         public bool IsValid(ConnectionInfo connection)
         {
-            return connection.Provider == ProviderNames.AzureStorage;
+            return connection != null && connection.Provider == ProviderNames.AzureStorage;
         }
 
         public ConnectionInfo GetConnectionInfo(KeyValuePair<string, string> pair)

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ConnectivityChecker.Contracts;
 using ConnectivityChecker.Contracts.Providers;
 using ConnectivityChecker.Core;
 using ConnectivityChecker.Core.Providers;
@@ -15,7 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IConnectionCheckerProvider, MySqlConnectionCheckerProvider>();
             services.AddSingleton<IConnectionCheckerProvider, SqlConnectionCheckerProvider>();
             services.AddSingleton<IConnectionCheckerProvider, AzureStorageConnectionCheckerProvider>();
-            services.TryAddSingleton<ConnectionsService>();
+            services.TryAddSingleton<IConnectionsService,ConnectionsService>();
 
             return services;
         }
